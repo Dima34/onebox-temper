@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         BigMag CRM Helper
 // @namespace    https://github.com/Dima34/onebox-temper/
-// @version      1.0
+// @version      1.3
 // @description  Додає корисні функції для CRM BigMag (crm.bigmag.ua)
 // @author       Dima Vavilov
 // @match        https://crm.bigmag.ua/*
@@ -14,69 +14,430 @@
 // ==/UserScript==
 
 (function() {
-    console.log("Hello world!)
     'use strict';
+    console.log("BigMag CRM Helper loaded");
 
-    // --- Стилі для додаткових елементів ---
-    GM_addStyle(`
-        .bigmag-helper-btn {
-            background: #4CAF50;
-            color: white;
-            padding: 8px 16px;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            margin: 5px;
-            font-size: 14px;
+    // JSON-конфіг: ключ = статус
+    // значення = масив правил (рядки = селектори, об’єкти = пошук по caption)
+    const statusConfig = {
+        "Нове": [".some-class-1", ".some-class-2"],
+        "В роботі": [".other-class"],
+        "Отказ": [
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Уровень цен:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Кредитный брокер:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Коментар від менеджера в магазині:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Накладная доставки:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "E-mail:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Менеджер в магазине:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Источник:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Способ связи:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Джерело реклами:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Ответственный:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Instagram Профиль:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Бизнес-процесс:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Область:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Обмен:"
+            }
+        ],
+        "Первый контакт": [
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Уровень цен:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Кредитный брокер:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Коментар від менеджера в магазині:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Накладная доставки:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "E-mail:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Менеджер в магазине:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Источник:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Способ связи:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Джерело реклами:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Ответственный:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Instagram Профиль:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Бизнес-процесс:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Область:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Обмен:"
+            }
+        ],
+        "Новый ЗАКАЗ": [
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Уровень цен:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Кредитный брокер:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Коментар від менеджера в магазині:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Накладная доставки:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "E-mail:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Менеджер в магазине:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Источник:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Способ связи:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Джерело реклами:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Ответственный:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Instagram Профиль:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Бизнес-процесс:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Область:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Город UA:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Склад продажи:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Адрес:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Способ доставки:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Причина отказа:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Посилання на телеграм:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Отчество:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Дата покупки:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Способ оплаты:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Способ доставки:"
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Обмен:"
+            }
+
+        ]
+    };
+
+    // Показати все перед повторним приховуванням
+    function resetVisibility() {
+        for (const key in statusConfig) {
+            statusConfig[key].forEach(rule => {
+                if (typeof rule === "string") {
+                    document.querySelectorAll(rule).forEach(el => {
+                        el.style.display = "";
+                    });
+                } else if (rule.type === "caption") {
+                    document.querySelectorAll(rule.container).forEach(el => {
+                        el.style.display = "";
+                    });
+                }
+            });
         }
-        .bigmag-helper-btn:hover {
-            background: #45a049;
-        }
-    `);
-
-    // --- Додаємо кнопку в інтерфейс CRM ---
-    function addHelperButton() {
-        const toolbar = document.querySelector('.header') || document.body;
-        if (!toolbar) return;
-
-        const btn = document.createElement('button');
-        btn.className = 'bigmag-helper-btn';
-        btn.textContent = '📊 Експорт даних';
-        btn.onclick = exportData;
-
-        toolbar.prepend(btn);
     }
 
-    // --- Експорт даних (приклад функції) ---
-    function exportData() {
-        const orders = [];
-        // Приклад: збираємо всі замовлення зі сторінки
-        document.querySelectorAll('.order-row').forEach(row => {
-            const id = row.querySelector('.order-id').innerText;
-            const sum = row.querySelector('.order-sum').innerText;
-            orders.push({ id, sum });
-        });
+    // Застосувати правила для статусу
+    function applyStatusRules(status) {
+        resetVisibility();
 
-        const csv = orders.map(o => `${o.id},${o.sum}`).join('\n');
-        const blob = new Blob([csv], { type: 'text/csv' });
-        const url = URL.createObjectURL(blob);
+        if (!statusConfig[status]) return;
 
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `bigmag_orders_${new Date().toISOString().slice(0, 10)}.csv`;
-        a.click();
-
-        GM_notification({
-            title: 'Експорт завершено',
-            text: `Експортовано ${orders.length} замовлень`,
-            timeout: 3000
+        statusConfig[status].forEach(rule => {
+            if (typeof rule === "string") {
+                // Простий селектор
+                document.querySelectorAll(rule).forEach(el => {
+                    el.style.display = "none";
+                });
+            } else if (rule.type === "caption") {
+                // Пошук по caption
+                document.querySelectorAll(rule.container).forEach(container => {
+                    const captionEl = container.querySelector(rule.captionSelector);
+                    if (captionEl && captionEl.innerText.trim() === rule.text.trim()) {
+                        container.style.display = "none";
+                    }
+                });
+            }
         });
     }
 
-    // --- Ініціалізація при завантаженні сторінки ---
-    setTimeout(() => {
-        addHelperButton();
-        console.log('BigMag CRM Helper активовано!');
-    }, 2000);
+    // Функція для перевірки статусу
+    function checkStatus() {
+        const dataViews = document.querySelectorAll('.data-view');
+
+        for (const view of dataViews) {
+            const caption = view.querySelector('.el-caption > .js-text');
+            if (caption && caption.innerText.trim() === 'Статус:') {
+                const valueElement = view.querySelector('.el-value');
+                if (valueElement) {
+                    const status = valueElement.innerText.trim();
+                    console.log('Поточний статус:', status);
+
+                    applyStatusRules(status);
+
+                    return status;
+                }
+            }
+        }
+        return null;
+    }
+
+    // Спостереження за #preView
+    function observePreview() {
+        const preView = document.querySelector('#preView');
+        if (!preView) return;
+
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.type === 'childList') {
+                    checkStatus();
+                }
+            });
+        });
+
+        observer.observe(preView, {
+            childList: true,
+            subtree: true
+        });
+
+        checkStatus();
+    }
+
+    // Запускаємо при завантаженні
+    window.addEventListener('load', function() {
+        if (document.querySelector('#preView')) {
+            observePreview();
+        } else {
+            const waitForPreview = setInterval(function() {
+                if (document.querySelector('#preView')) {
+                    clearInterval(waitForPreview);
+                    observePreview();
+                }
+            }, 500);
+        }
+    });
 
 })();
