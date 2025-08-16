@@ -14,6 +14,7 @@
 // ==/UserScript==
 
 (function() {
+    console.log("Hello world!)
     'use strict';
 
     // --- Стилі для додаткових елементів ---
