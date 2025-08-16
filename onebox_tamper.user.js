@@ -9,8 +9,8 @@
 // @grant        GM_xmlhttpRequest
 // @grant        GM_notification
 // @icon         https://crm.bigmag.ua/favicon.ico
-// @updateURL    https://raw.githubusercontent.com/ваш-нікнейм/bigmag-crm-tools/main/bigmag_crm_helper.user.js
-// @downloadURL  https://raw.githubusercontent.com/ваш-нікнейм/bigmag-crm-tools/main/bigmag_crm_helper.user.js
+// @updateURL    https://github.com/Dima34/onebox-temper/raw/refs/heads/main/onebox_tamper.user.js
+// @downloadURL  https://github.com/Dima34/onebox-temper/raw/refs/heads/main/onebox_tamper.user.js
 // ==/UserScript==
 
 (function() {
