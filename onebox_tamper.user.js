@@ -106,7 +106,13 @@
                 container: ".ob-data-element",
                 captionSelector: ".el-caption",
                 text: "Обмен:"
-            }
+            },
+            {
+                type: "caption",
+                container: ".ob-data-element",
+                captionSelector: ".el-caption",
+                text: "Посилання на телеграм:"
+            },
         ],
         "Первый контакт": [
             {
