@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         BigMag CRM Helper
 // @namespace    https://github.com/Dima34/onebox-temper/
-// @version      1.6
+// @version      1.7
 // @description  Додає корисні функції для CRM BigMag (crm.bigmag.ua)
 // @author       Dima Vavilov
 // @match        https://crm.bigmag.ua/*
@@ -218,7 +218,7 @@
     }
 
     // Функція для перевірки статусу
-    function checkStatus() {
+    function processStatus() {
         const dataViews = document.querySelectorAll('.double .block-zone:nth-of-type(2) .data-view');
 
         for (const view of dataViews) {
@@ -236,21 +236,41 @@
         return null;
     }
 
+    let preView;
+    let observer;
+
     // Спостереження за #preView
     function observePreview() {
-        const preView = document.querySelector('#preView');
+        prepareObserver();
+        observeObserver();
+        
+        update();
+    }
+
+    function prepareObserver() {
+        preView = document.querySelector('#preView');
         if (!preView) return;
 
-        const observer = new MutationObserver(function (mutations) {
+        observer = new MutationObserver(function (mutations) {
             mutations.forEach(function (mutation) {
                 if (mutation.type === 'childList') {
-                    checkStatus();
+                    update();
                 }
             });
         });
+    }
 
+    function observeObserver(){
         observer.observe(preView, { childList: true, subtree: true });
-        checkStatus();
+    }
+
+    function disconnectObserver(params) {
+        observer.disconnect();
+    }
+
+    function update(){
+        processStatus();
+        handlePhoneNubmerUpgrade();
     }
 
     // Запускаємо при завантаженні
@@ -266,4 +286,48 @@
             }, 500);
         }
     });
+
+    function handlePhoneNubmerUpgrade() {
+        document.querySelectorAll('.data-view').forEach(view => {
+            if (view.dataset.calltoProcessed) return; // вже оброблено
+
+            const caption = view.querySelector('.el-caption');
+            if (!caption) return;
+
+            if (caption.textContent.trim() === 'Телефон клиента:') {
+                const phoneLink = view.querySelector('a[data-phone]');
+                if (!phoneLink) return;
+
+                const rawPhone = phoneLink.getAttribute('data-phone');
+                if (!rawPhone) return;
+
+                const phone = rawPhone.replace(/[^\d+]/g, ""); // очищаємо номер
+
+                disconnectObserver();
+
+                console.log("after observation");
+                console.log("phone is " + phone);
+                
+                
+                // Клонуємо caption, щоб прибрати старі слухачі
+                const newPhoneLink = phoneLink.cloneNode(true);
+                phoneLink.parentNode.replaceChild(newPhoneLink, phoneLink);
+
+                console.log(newPhoneLink.parentNode);
+                
+
+                // Навішуємо наш клік
+                newPhoneLink.style.cursor = "pointer";
+                newPhoneLink.addEventListener('click', e => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    window.location.href = `callto:+${phone}`;
+                });
+
+                view.dataset.calltoProcessed = "true";
+
+                observeObserver();
+            }
+        });
+    }
 })();
