@@ -20,14 +20,13 @@
     // Конфіг у новому форматі з підтримкою масиву для text і button
     const statusConfig = [
         {
-            statuses: ["Отказ"],
+            statuses: ["НП самовывоз"],
             actions: [
                 {
                     type: "text", container: ".ob-data-element", captionSelector: [".el-caption"], text: [
                         "Уровень цен:",
                         "Кредитный брокер:",
                         "Коментар від менеджера в магазині:",
-                        "Накладная доставки:",
                         "E-mail:",
                         "Менеджер в магазине:",
                         "Источник:",
@@ -46,7 +45,34 @@
             ]
         },
         {
-            statuses: ["Первый контакт", "Новый ЗАКАЗ"],
+            statuses: ["Отказ"],
+            actions: [
+                {
+                    type: "text", container: ".ob-data-element", captionSelector: [".el-caption"], text: [
+                        "Уровень цен:",
+                        "Кредитный брокер:",
+                        "Коментар від менеджера в магазині:",
+                        "E-mail:",
+                        "Менеджер в магазине:",
+                        "Источник:",
+                        "Способ связи:",
+                        "Джерело реклами:",
+                        "Ответственный:",
+                        "Instagram Профиль:",
+                        "Бизнес-процесс:",
+                        "Область:",
+                        "Обмен:",
+                        "Посилання на телеграм:",
+                        "Способ оплаты:"
+                    ]
+                },
+                { type: "button", container: ".ob-button-fixed input[type='submit']", value: ["Тест НЕ НАЖИМАТЬ"] }
+            ]
+        },
+        {
+            statuses: ["Первый контакт", "Новый ЗАКАЗ", 
+                "Крещатик 13/2 Самовывоз", "Львів Самовивіз", "Зв'язатися при наявності", 
+                "Перемещение", "Новая Почта", "Аладин Самовывоз"],
             actions: [
                 {
                     type: "text", container: ".ob-data-element", captionSelector: [".el-caption"], text: [
@@ -96,12 +122,46 @@
             ]
         },
         {
-            statuses: ["Новый ЗАКАЗ"],
+            statuses: ["Крещатик 13/2 Самовывоз", "Львів Самовивіз","Аладин Самовывоз" ],
+            actions: [
+                {
+                    type: "text", container: ".ob-data-element", captionSelector: [".el-caption"],
+                    text: [
+                        "Адрес :"
+                    ]
+                },
+                {
+                    type: "button", container: ".ob-button-fixed input[type='submit']", 
+                    value: [
+                        "Клиент в магазине", "Отказ в магазине"
+                    ]
+                }
+            ]
+        },
+        {
+            statuses: ["Перемещение"],
             actions: [
                 {
                     type: "text", container: ".ob-data-element", captionSelector: [".el-caption"],
                     text: [
 
+                    ]
+                },
+                {
+                    type: "button", container: ".ob-button-fixed input[type='submit']", 
+                    value: [
+                        "Крещатик 13/2 Самовывоз", "Партнер Самовывоз", "Аладин Самовывоз", "Львів Самовивіз"
+                    ]
+                }
+            ]
+        },
+        {
+            statuses: ["Новый ЗАКАЗ"],
+            actions: [
+                {
+                    type: "text", container: ".ob-data-element", captionSelector: [".el-caption"],
+                    text: [
+                        
                     ]
                 },
                 {
@@ -159,7 +219,7 @@
 
     // Функція для перевірки статусу
     function checkStatus() {
-        const dataViews = document.querySelectorAll('.data-view');
+        const dataViews = document.querySelectorAll('.double .block-zone:nth-of-type(2) .data-view');
 
         for (const view of dataViews) {
             const caption = view.querySelector('.el-caption > .js-text');
