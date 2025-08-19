@@ -20,66 +20,16 @@
     // Конфіг у новому форматі з підтримкою масиву для text і button
     const statusConfig = [
         {
-            statuses: ["НП самовывоз"],
+            statuses: ["Отказ", "Первый контакт", "Новый ЗАКАЗ",
+                "Крещатик 13/2 Самовывоз", "Львів Самовивіз", "Зв'язатися при наявності",
+                "Перемещение", "Новая Почта", "Аладин Самовывоз", "НП самовывоз", "Успешно реализован"
+            ],
             actions: [
                 {
                     type: "text", container: ".ob-data-element", captionSelector: [".el-caption"], text: [
                         "Уровень цен:",
                         "Кредитный брокер:",
                         "Коментар від менеджера в магазині:",
-                        "E-mail:",
-                        "Менеджер в магазине:",
-                        "Источник:",
-                        "Способ связи:",
-                        "Джерело реклами:",
-                        "Ответственный:",
-                        "Instagram Профиль:",
-                        "Бизнес-процесс:",
-                        "Область:",
-                        "Обмен:",
-                        "Посилання на телеграм:",
-                        "Способ оплаты:"
-                    ]
-                },
-                { type: "button", container: ".ob-button-fixed input[type='submit']", value: ["Тест НЕ НАЖИМАТЬ"] }
-            ]
-        },
-        {
-            statuses: ["Отказ"],
-            actions: [
-                {
-                    type: "text", container: ".ob-data-element", captionSelector: [".el-caption"], text: [
-                        "Уровень цен:",
-                        "Кредитный брокер:",
-                        "Коментар від менеджера в магазині:",
-                        "E-mail:",
-                        "Менеджер в магазине:",
-                        "Источник:",
-                        "Способ связи:",
-                        "Джерело реклами:",
-                        "Ответственный:",
-                        "Instagram Профиль:",
-                        "Бизнес-процесс:",
-                        "Область:",
-                        "Обмен:",
-                        "Посилання на телеграм:",
-                        "Способ оплаты:"
-                    ]
-                },
-                { type: "button", container: ".ob-button-fixed input[type='submit']", value: ["Тест НЕ НАЖИМАТЬ"] }
-            ]
-        },
-        {
-            statuses: ["Первый контакт", "Новый ЗАКАЗ", 
-                "Крещатик 13/2 Самовывоз", "Львів Самовивіз", "Зв'язатися при наявності", 
-                "Перемещение", "Новая Почта", "Аладин Самовывоз"],
-            actions: [
-                {
-                    type: "text", container: ".ob-data-element", captionSelector: [".el-caption"], text: [
-                        "Уровень цен:",
-                        "Кредитный брокер:",
-                        "Коментар від менеджера в магазині:",
-                        "Накладная доставки:",
                         "E-mail:",
                         "Менеджер в магазине:",
                         "Источник:",
@@ -99,13 +49,27 @@
                         "Заказ товара", "Успешно реализован", "Кредит", "Предоплата",
                         "Запрос поставщику", "Успешно партнер", "УкрПочта", "Сервис Бигмаг",
                         "Недозвон", "Выезд Эксперта", "Одесса самовывоз", "Без звонка Отказ",
-                        "Заказ на Трейд", "Днепр самовывоз", "Харьков самовывоз"
+                        "Заказ на Трейд", "Днепр самовывоз", "Харьков самовывоз", "Ремонт", "Смс рассылка",
+                        "Тест НЕ НАЖИМАТЬ"
                     ]
                 }
             ]
         },
         {
-            statuses: ["Новый ЗАКАЗ"],
+            statuses: ["Отказ", "Первый контакт", "Новый ЗАКАЗ",
+                "Крещатик 13/2 Самовывоз", "Львів Самовивіз", "Зв'язатися при наявності",
+                "Перемещение", "Новая Почта", "Аладин Самовывоз", "Успешно реализован"
+            ],
+            actions: [
+                {
+                    type: "text", container: ".ob-data-element", captionSelector: [".el-caption"], text: [
+                        "Накладная доставки:",
+                    ]
+                },
+            ]
+        },
+        {
+            statuses: ["Новый ЗАКАЗ", "НП самовывоз"],
             actions: [
                 {
                     type: "text", container: ".ob-data-element", captionSelector: [".el-caption"],
@@ -114,7 +78,7 @@
                     ]
                 },
                 {
-                    type: "button", container: ".ob-button-fixed input[type='submit']", 
+                    type: "button", container: ".ob-button-fixed input[type='submit']",
                     value: [
                         "Ремонт завершен", "Черный список", "Ремонт завершен"
                     ]
@@ -122,7 +86,7 @@
             ]
         },
         {
-            statuses: ["Крещатик 13/2 Самовывоз", "Львів Самовивіз","Аладин Самовывоз" ],
+            statuses: ["Крещатик 13/2 Самовывоз", "Львів Самовивіз", "Аладин Самовывоз"],
             actions: [
                 {
                     type: "text", container: ".ob-data-element", captionSelector: [".el-caption"],
@@ -131,7 +95,7 @@
                     ]
                 },
                 {
-                    type: "button", container: ".ob-button-fixed input[type='submit']", 
+                    type: "button", container: ".ob-button-fixed input[type='submit']",
                     value: [
                         "Клиент в магазине", "Отказ в магазине"
                     ]
@@ -148,10 +112,33 @@
                     ]
                 },
                 {
-                    type: "button", container: ".ob-button-fixed input[type='submit']", 
+                    type: "button", container: ".ob-button-fixed input[type='submit']",
                     value: [
                         "Крещатик 13/2 Самовывоз", "Партнер Самовывоз", "Аладин Самовывоз", "Львів Самовивіз"
                     ]
+                }
+            ]
+        },
+        // Вмикаємо "Адрес:" лиш коли НП або Уклон
+        {
+            statuses: ["Отказ", "Перемещение", "Первый контакт",
+                "Зв'язатися при наявності",
+                "Перемещение", "Новая Почта", "НП самовывоз",
+                "ROZETKA Delivery", "Курьер", "Успешно реализован"],
+            actions: [
+                {
+                    type: "condition",
+                    watch: {
+                        container: ".ob-data-element",
+                        captionSelector: [".el-caption"],
+                        text: ["Способ доставки :"]
+                    },
+                    expectedValue: ["Доставка Новой Почтой", "Uklon Delivery"],
+                    target: {
+                        container: ".ob-data-element",
+                        captionSelector: [".el-caption"],
+                        text: ["Адрес :"]
+                    }
                 }
             ]
         },
@@ -161,11 +148,29 @@
                 {
                     type: "text", container: ".ob-data-element", captionSelector: [".el-caption"],
                     text: [
-                        
+
                     ]
                 },
                 {
-                    type: "button", container: ".ob-button-fixed input[type='submit']", 
+                    type: "button", container: ".ob-button-fixed input[type='submit']",
+                    value: [
+
+                    ]
+                }
+            ]
+        },
+        // Шаблон
+        {
+            statuses: ["Новый ЗАКАЗ"],
+            actions: [
+                {
+                    type: "text", container: ".ob-data-element", captionSelector: [".el-caption"],
+                    text: [
+
+                    ]
+                },
+                {
+                    type: "button", container: ".ob-button-fixed input[type='submit']",
                     value: [
 
                     ]
@@ -174,38 +179,60 @@
         }
     ];
 
-    // Показати все перед повторним приховуванням
+    // ==========================
+    // Службові функції
+    // ==========================
+
+    let fieldObservers = []; // активні обсервери для condition
+
+    function disconnectFieldObservers() {
+        fieldObservers.forEach(obs => obs.disconnect());
+        fieldObservers = [];
+    }
+
+    // пошук елементів по правилу (container + captionSelector + text)
+    function findField(rule) {
+        const texts = Array.isArray(rule.text) ? rule.text : [rule.text];
+        const selectors = Array.isArray(rule.captionSelector) ? rule.captionSelector : [rule.captionSelector];
+
+        const foundViews = [];
+        document.querySelectorAll(rule.container).forEach(container => {
+            for (let sel of selectors) {
+                const captionEl = container.querySelector(sel);
+                if (captionEl && texts.includes(captionEl.innerText.trim())) {
+                    foundViews.push(container);
+                    break;
+                }
+            }
+        });
+        return foundViews;
+    }
+
+    // показати все перед повторним приховуванням
     function resetVisibility() {
         statusConfig.forEach(cfg => {
             cfg.actions.forEach(rule => {
-                document.querySelectorAll(rule.container).forEach(el => el.style.display = "");
+                if (rule.container) {
+                    document.querySelectorAll(rule.container).forEach(el => el.style.display = "");
+                }
             });
         });
     }
 
-    // Застосувати правила для статусу
+    // застосувати правила для статусу
     function applyStatusRules(status) {
         resetVisibility();
+        disconnectFieldObservers();
 
         statusConfig.forEach(cfg => {
             if (!cfg.statuses.includes(status)) return;
 
             cfg.actions.forEach(rule => {
                 if (rule.type === "text") {
-                    const texts = Array.isArray(rule.text) ? rule.text : [rule.text];
-                    const selectors = Array.isArray(rule.captionSelector) ? rule.captionSelector : [rule.captionSelector];
-
-                    document.querySelectorAll(rule.container).forEach(container => {
-                        for (let sel of selectors) {
-                            const captionEl = container.querySelector(sel);
-                            if (captionEl && texts.includes(captionEl.innerText.trim())) {
-                                container.style.display = "none";
-                                break;
-                            }
-                        }
-                    });
-
-                } else if (rule.type === "button") {
+                    const foundViews = findField(rule);
+                    foundViews.forEach(view => view.style.display = "none");
+                }
+                else if (rule.type === "button") {
                     const values = Array.isArray(rule.value) ? rule.value : [rule.value];
                     document.querySelectorAll(rule.container).forEach(el => {
                         if (el.value && values.includes(el.value.trim())) {
@@ -213,12 +240,44 @@
                         }
                     });
                 }
+                else if (rule.type === "condition") {
+                    const watchFields = findField(rule.watch);
+                    const targetFields = findField(rule.target);
+                    const expected = Array.isArray(rule.expectedValue) ? rule.expectedValue : [rule.expectedValue];
+
+                    // спочатку ховаємо таргети
+                    targetFields.forEach(target => target.style.display = "none");
+
+                    watchFields.forEach(watchView => {
+                        const valueEl = watchView.querySelector(".el-value");
+                        if (!valueEl) return;
+
+                        function updateVisibility() {
+                            if (expected.includes(valueEl.innerText.trim())) {
+                                targetFields.forEach(target => target.style.display = "");
+                            } else {
+                                targetFields.forEach(target => target.style.display = "none");
+                            }
+                        }
+
+                        updateVisibility(); // перевірити одразу
+
+                        const obs = new MutationObserver(updateVisibility);
+                        obs.observe(valueEl, { childList: true, characterData: true, subtree: true });
+                        fieldObservers.push(obs);
+                    });
+                }
             });
         });
     }
 
-    // Функція для перевірки статусу
+    // ==========================
+    // Логіка статусів
+    // ==========================
+
     function processStatus() {
+        disconnectFieldObservers();
+
         const dataViews = document.querySelectorAll('.double .block-zone:nth-of-type(2) .data-view');
 
         for (const view of dataViews) {
@@ -236,14 +295,16 @@
         return null;
     }
 
+    // ==========================
+    // MutationObserver для #preView
+    // ==========================
+
     let preView;
     let observer;
 
-    // Спостереження за #preView
     function observePreview() {
         prepareObserver();
         observeObserver();
-        
         update();
     }
 
@@ -260,32 +321,24 @@
         });
     }
 
-    function observeObserver(){
-        observer.observe(preView, { childList: true, subtree: true });
+    function observeObserver() {
+        if (observer && preView) {
+            observer.observe(preView, { childList: true, subtree: true });
+        }
     }
 
-    function disconnectObserver(params) {
-        observer.disconnect();
+    function disconnectObserver() {
+        if (observer) observer.disconnect();
     }
 
-    function update(){
+    function update() {
         processStatus();
         handlePhoneNubmerUpgrade();
     }
 
-    // Запускаємо при завантаженні
-    window.addEventListener('load', function () {
-        if (document.querySelector('#preView')) {
-            observePreview();
-        } else {
-            const waitForPreview = setInterval(function () {
-                if (document.querySelector('#preView')) {
-                    clearInterval(waitForPreview);
-                    observePreview();
-                }
-            }, 500);
-        }
-    });
+    // ==========================
+    // Обробка телефонів
+    // ==========================
 
     function handlePhoneNubmerUpgrade() {
         document.querySelectorAll('.data-view').forEach(view => {
@@ -301,20 +354,13 @@
                 const rawPhone = phoneLink.getAttribute('data-phone');
                 if (!rawPhone) return;
 
-                const phone = rawPhone.replace(/[^\d+]/g, ""); // очищаємо номер
+                const phone = rawPhone.replace(/[^\d+]/g, "");
 
                 disconnectObserver();
 
-                console.log("after observation");
-                console.log("phone is " + phone);
-                
-                
                 // Клонуємо caption, щоб прибрати старі слухачі
                 const newPhoneLink = phoneLink.cloneNode(true);
                 phoneLink.parentNode.replaceChild(newPhoneLink, phoneLink);
-
-                console.log(newPhoneLink.parentNode);
-                
 
                 // Навішуємо наш клік
                 newPhoneLink.style.cursor = "pointer";
@@ -330,4 +376,21 @@
             }
         });
     }
+
+    // ==========================
+    // Запуск
+    // ==========================
+
+    window.addEventListener('load', function () {
+        if (document.querySelector('#preView')) {
+            observePreview();
+        } else {
+            const waitForPreview = setInterval(function () {
+                if (document.querySelector('#preView')) {
+                    clearInterval(waitForPreview);
+                    observePreview();
+                }
+            }, 500);
+        }
+    });
 })();
