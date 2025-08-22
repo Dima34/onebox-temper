@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         BigMag CRM Helper
 // @namespace    https://github.com/Dima34/onebox-temper/
-// @version      1.7
+// @version      1.8
 // @description  Додає корисні функції для CRM BigMag (crm.bigmag.ua)
 // @author       Dima Vavilov
 // @match        https://crm.bigmag.ua/*
@@ -13,26 +13,29 @@
 // @downloadURL  https://github.com/Dima34/onebox-temper/raw/refs/heads/main/onebox_tamper.user.js
 // ==/UserScript==
 
+
 (function () {
     'use strict';
     console.log("BigMag CRM Helper loaded");
+
+    const MANAGER_NAME = "Вавілов Дмитро"
 
     // Конфіг у новому форматі з підтримкою масиву для text і button
     const statusConfig = [
         {
             statuses: ["Отказ", "Первый контакт", "Новый ЗАКАЗ",
                 "Крещатик 13/2 Самовывоз", "Львів Самовивіз", "Зв'язатися при наявності",
-                "Перемещение", "Новая Почта", "Аладин Самовывоз", "НП самовывоз", "Успешно реализован"
+                "Перемещение", "Новая Почта", "Аладин Самовывоз", "НП самовывоз", "Успешно реализован",
+                "ROZETKA Delivery"
             ],
             actions: [
                 {
-                    type: "text", container: ".ob-data-element", captionSelector: [".el-caption"], text: [
+                    type: "hide-field", container: ".ob-data-element", captionSelector: [".el-caption"], text: [
                         "Уровень цен:",
                         "Кредитный брокер:",
                         "Коментар від менеджера в магазині:",
                         "E-mail:",
                         "Менеджер в магазине:",
-                        "Источник:",
                         "Способ связи:",
                         "Джерело реклами:",
                         "Ответственный:",
@@ -45,13 +48,43 @@
                     ]
                 },
                 {
-                    type: "button", container: ".ob-button-fixed input[type='submit']", value: [
-                        "Заказ товара", "Успешно реализован", "Кредит", "Предоплата",
+                    type: "remove-toolbar-button", container: ".ob-button-fixed input[type='submit']", value: [
+                        "Заказ товара", "Кредит", "Предоплата",
                         "Запрос поставщику", "Успешно партнер", "УкрПочта", "Сервис Бигмаг",
                         "Недозвон", "Выезд Эксперта", "Одесса самовывоз", "Без звонка Отказ",
                         "Заказ на Трейд", "Днепр самовывоз", "Харьков самовывоз", "Ремонт", "Смс рассылка",
                         "Тест НЕ НАЖИМАТЬ"
                     ]
+                },
+                {
+                    type: "condition",
+                    watch: {
+                        container: ".ob-data-element",
+                        captionSelector: [".el-caption"],
+                        text: ["Способ доставки :"]
+                    },
+                    expectedValue: ['ТЦ "Аладин"', "Самовивіз Львів", "Крещатик 13/2 Самовывоз"],
+                    target: {
+                        container: ".ob-data-element",
+                        captionSelector: [".el-caption"],
+                        text: ["Менеджер в магазине:"]
+                    }
+                },
+                // Вмикаємо "Источник" тільки тоді, коли це розетка, щоб розуміти
+                // Що замовлення з розетки
+                {
+                    type: "condition",
+                    watch: {
+                        container: ".ob-data-element",
+                        captionSelector: [".el-caption"],
+                        text: ["Источник:"]
+                    },
+                    expectedValue: ["Rozetka"],
+                    target: {
+                        container: ".ob-data-element",
+                        captionSelector: [".el-caption"],
+                        text: ["Источник:"]
+                    }
                 }
             ]
         },
@@ -62,23 +95,23 @@
             ],
             actions: [
                 {
-                    type: "text", container: ".ob-data-element", captionSelector: [".el-caption"], text: [
+                    type: "hide-field", container: ".ob-data-element", captionSelector: [".el-caption"], text: [
                         "Накладная доставки:",
                     ]
                 },
             ]
         },
         {
-            statuses: ["Новый ЗАКАЗ", "НП самовывоз"],
+            statuses: ["Новый ЗАКАЗ"],
             actions: [
                 {
-                    type: "text", container: ".ob-data-element", captionSelector: [".el-caption"],
+                    type: "hide-field", container: ".ob-data-element", captionSelector: [".el-caption"],
                     text: [
                         "Склад продажи:", "Адрес :", "Способ доставки :"
                     ]
                 },
                 {
-                    type: "button", container: ".ob-button-fixed input[type='submit']",
+                    type: "remove-toolbar-button", container: ".ob-button-fixed input[type='submit']",
                     value: [
                         "Ремонт завершен", "Черный список", "Ремонт завершен"
                     ]
@@ -89,13 +122,13 @@
             statuses: ["Крещатик 13/2 Самовывоз", "Львів Самовивіз", "Аладин Самовывоз"],
             actions: [
                 {
-                    type: "text", container: ".ob-data-element", captionSelector: [".el-caption"],
+                    type: "hide-field", container: ".ob-data-element", captionSelector: [".el-caption"],
                     text: [
                         "Адрес :"
                     ]
                 },
                 {
-                    type: "button", container: ".ob-button-fixed input[type='submit']",
+                    type: "remove-toolbar-button", container: ".ob-button-fixed input[type='submit']",
                     value: [
                         "Клиент в магазине", "Отказ в магазине"
                     ]
@@ -106,13 +139,13 @@
             statuses: ["Перемещение"],
             actions: [
                 {
-                    type: "text", container: ".ob-data-element", captionSelector: [".el-caption"],
+                    type: "hide-field", container: ".ob-data-element", captionSelector: [".el-caption"],
                     text: [
 
                     ]
                 },
                 {
-                    type: "button", container: ".ob-button-fixed input[type='submit']",
+                    type: "remove-toolbar-button", container: ".ob-button-fixed input[type='submit']",
                     value: [
                         "Крещатик 13/2 Самовывоз", "Партнер Самовывоз", "Аладин Самовывоз", "Львів Самовивіз"
                     ]
@@ -146,16 +179,42 @@
             statuses: ["Новый ЗАКАЗ"],
             actions: [
                 {
-                    type: "text", container: ".ob-data-element", captionSelector: [".el-caption"],
+                    type: "hide-field", container: ".ob-data-element", captionSelector: [".el-caption"],
                     text: [
 
                     ]
                 },
                 {
-                    type: "button", container: ".ob-button-fixed input[type='submit']",
+                    type: "remove-toolbar-button", container: ".ob-button-fixed input[type='submit']",
                     value: [
 
                     ]
+                }
+            ]
+        },
+        // Додаємо кастомні кнопки у новий заказ(поки тест на "Отказ")
+        {
+            statuses: ["Новый ЗАКАЗ"],
+            actions: [
+                // {
+                //     type: "add-toolbar-button",
+                //     name: "Підготувати",
+                //     onClick: function () {
+
+                //     }
+                // },
+                {
+                    type: "upgrade-toolbar-button",
+                    name: "Первый контакт",
+                    onClick: function (event, newClickHandler) {
+                        checkAndSetFieldValueIfEmpty("Город UA:", "Київ");
+                        checkAndSetFieldValueIfEmpty("Категория:", "Б/У техника");
+                        checkAndSetFieldValueIfEmpty("Менеджер:", MANAGER_NAME);
+                        checkAndSetFieldValueIfEmpty("Тип оплаты :", "Обычная оплата");
+
+                        // виклик дефолтного (старого) коду кнопки
+                        if (newClickHandler) newClickHandler();
+                    }
                 }
             ]
         },
@@ -164,13 +223,14 @@
             statuses: ["Новый ЗАКАЗ"],
             actions: [
                 {
-                    type: "text", container: ".ob-data-element", captionSelector: [".el-caption"],
+                    type: "hide-field", container: ".ob-data-element", captionSelector: [".el-caption"],
                     text: [
 
                     ]
                 },
                 {
-                    type: "button", container: ".ob-button-fixed input[type='submit']",
+                    type: "remove-toolbar-button",
+                    container: ".ob-button-fixed input[type='submit']",
                     value: [
 
                     ]
@@ -184,11 +244,84 @@
     // ==========================
 
     let fieldObservers = []; // активні обсервери для condition
+    let createdElements = []; // кастомно створені елементи для тегів
 
     function disconnectFieldObservers() {
         fieldObservers.forEach(obs => obs.disconnect());
         fieldObservers = [];
     }
+
+    function deletePrevCreatedElements() {
+        createdElements.forEach(el => {
+            el.remove();
+        })
+    }
+
+    function checkAndSetFieldValueIfEmpty(fieldName, value) {
+        let fieldElement = getFieldElement(fieldName)
+
+        console.log(fieldElement);
+        console.log(isFieldEmpty(fieldElement));
+
+        if (isFieldEmpty(fieldElement)) {
+            setFieldElementValue(fieldElement, value)
+        }
+    }
+    
+    const FIELD_ELEMENT_SELECTOR = "[data-placeholder], input[placeholder]:not([role='combobox'])";
+
+    function isFieldEmpty(fieldElement) {
+        const fieldInput = fieldElement.querySelector(FIELD_ELEMENT_SELECTOR)
+        return fieldInput.value.length == 0
+    }
+
+    function setFieldElementValue(fieldElement, value) {
+        const fieldInput = fieldElement.querySelector(FIELD_ELEMENT_SELECTOR)
+        fieldInput.removeAttribute("disabled")
+
+        if (fieldInput.tagName.toLowerCase() === "input") {
+            fieldInput.setAttribute("value", value)    
+        } else if (fieldInput.tagName.toLowerCase() === "select") {
+            let option = Array.from(fieldInput.options).find(opt => opt.value === value);
+
+            if (option) {
+                option.selected = true;
+            } else {
+                const tempOption = document.createElement("option");
+                tempOption.value = value;
+                tempOption.textContent = value;
+                tempOption.selected = true;
+                fieldInput.appendChild(tempOption);
+
+                setTimeout(() => {
+                    if (tempOption.parentNode) {
+                        tempOption.remove();
+                    }
+                }, 1000);
+            }
+        }
+    }
+
+
+    function getFieldElement(name) {
+        // Знаходимо всі обгортки
+        const elements = document.querySelectorAll('.ob-data-element');
+
+        for (const el of elements) {
+            const captionEl = el.querySelector('.el-caption');
+            if (!captionEl) continue;
+
+            // Беремо текст і чистимо від пробілів/переносів
+            const captionText = captionEl.textContent.trim();
+
+            if (captionText === name.trim()) {
+                return el;
+            }
+        }
+
+        return null; // якщо не знайдено
+    }
+
 
     // пошук елементів по правилу (container + captionSelector + text)
     function findField(rule) {
@@ -223,16 +356,17 @@
     function applyStatusRules(status) {
         resetVisibility();
         disconnectFieldObservers();
+        deletePrevCreatedElements();
 
         statusConfig.forEach(cfg => {
             if (!cfg.statuses.includes(status)) return;
 
             cfg.actions.forEach(rule => {
-                if (rule.type === "text") {
+                if (rule.type === "hide-field") {
                     const foundViews = findField(rule);
                     foundViews.forEach(view => view.style.display = "none");
                 }
-                else if (rule.type === "button") {
+                else if (rule.type === "remove-toolbar-button") {
                     const values = Array.isArray(rule.value) ? rule.value : [rule.value];
                     document.querySelectorAll(rule.container).forEach(el => {
                         if (el.value && values.includes(el.value.trim())) {
@@ -240,6 +374,90 @@
                         }
                     });
                 }
+                else if (rule.type === "add-toolbar-button") {
+                    disconnectObserver()
+                    const container = document.querySelector(".ob-grid-default .ob-button-fixed.js-check-animation")
+                    const name = rule.name;
+
+                    const button = document.createElement("input");
+                    button.type = "submit";
+                    button.value = rule.name;
+                    button.className = "ob-button js-change-order-status js-workflow-tooltip dark tooltipstered";
+                    button.style.backgroundColor = "#ffd2fb";
+
+                    // якщо rule.onClick – це функція
+                    if (typeof rule.onClick === "function") {
+                        button.addEventListener("click", rule.onClick);
+                    }
+                    // якщо rule.onClick – це текст коду
+                    else if (typeof rule.onClick === "string") {
+                        button.setAttribute("onclick", rule.onClick);
+                    }
+
+                    const insertBeforeElement = container.querySelector("input[type='submit'][value='Первый контакт")
+                    container.insertBefore(button, insertBeforeElement);
+                    createdElements.push(button)
+                    observeObserver()
+                }
+                else if (rule.type === "upgrade-toolbar-button") {
+                    disconnectObserver();
+
+                    const name = rule.name;
+                    const toolbarButton = document.querySelector(
+                        `.ob-button-fixed input[type='submit'][value='${name}']`
+                    );
+
+                    if (toolbarButton) {
+                        // 1. Дістаємо старий код із onclick або з data-onclick
+                        let oldOnClickAttr = toolbarButton.getAttribute("onclick");
+                        if (!oldOnClickAttr) {
+                            oldOnClickAttr = toolbarButton.getAttribute("data-onclick") || "";
+                        } else {
+                            // Переносимо в data-onclick, щоб зберегти
+                            toolbarButton.setAttribute("data-onclick", oldOnClickAttr);
+                            toolbarButton.removeAttribute("onclick");
+                        }
+
+                        // 2. Розбиваємо по першому return
+                        let [beforeReturn, afterReturn] = oldOnClickAttr.split(/return\s+/);
+                        afterReturn = afterReturn || "";
+
+                        // 3. Генеруємо новий код як рядок
+                        const newCode = `
+                            // --- Мій кастомний код ---
+                            if (onClickHandler) {
+                                onClickHandler.call(this, event);
+                            }
+
+                            // --- Частина старого коду до return ---
+                            ${beforeReturn}
+
+                            // --- Частина після return ---
+                            let __res = (function(){ ${afterReturn} }).call(this);
+                            if (__res !== false) {
+                                const form = this.form || (event && event.target && event.target.form);
+                                if (form) {
+                                    if (typeof form.requestSubmit === "function") {
+                                        form.requestSubmit(this);
+                                    } else {
+                                        form.submit();
+                                    }
+                                }
+                            }
+                        `;
+
+                        // 4. Створюємо функцію з параметрами (event, onClickHandler)
+                        const compiledFn = new Function("event", "onClickHandler", newCode).bind(toolbarButton);
+
+                        // 5. Обгортаємо у функцію, щоб підставити rule.onClick
+                        toolbarButton.onclick = function (event) {
+                            return compiledFn.call(this, event, rule.onClick);
+                        };
+                    }
+
+                    observeObserver();
+                }
+
                 else if (rule.type === "condition") {
                     const watchFields = findField(rule.watch);
                     const targetFields = findField(rule.target);
@@ -286,7 +504,6 @@
                 const valueElement = view.querySelector('.el-value');
                 if (valueElement) {
                     const status = valueElement.innerText.trim();
-                    console.log('Поточний статус:', status);
                     applyStatusRules(status);
                     return status;
                 }
@@ -299,6 +516,10 @@
     // MutationObserver для #preView
     // ==========================
 
+    const observedContainerSelector = '#preView'
+    console.log(document.querySelector(observedContainerSelector));
+
+
     let preView;
     let observer;
 
@@ -308,22 +529,30 @@
         update();
     }
 
+    let updateDebounce;
+    const DEBOUNCE_TIME = 40
+
     function prepareObserver() {
-        preView = document.querySelector('#preView');
+        preView = document.querySelector(observedContainerSelector);
         if (!preView) return;
 
         observer = new MutationObserver(function (mutations) {
-            mutations.forEach(function (mutation) {
-                if (mutation.type === 'childList') {
+            if (mutations.some(m => m.type === 'childList')) {
+                clearTimeout(updateDebounce);
+                updateDebounce = setTimeout(() => {
                     update();
-                }
-            });
+                }, DEBOUNCE_TIME); // викликається тільки раз після "затишшя"
+            }
         });
     }
 
     function observeObserver() {
         if (observer && preView) {
-            observer.observe(preView, { childList: true, subtree: true });
+            observer.observe(preView, {
+                childList: true,
+                characterData: true,
+                subtree: true,
+            });
         }
     }
 
@@ -354,7 +583,15 @@
                 const rawPhone = phoneLink.getAttribute('data-phone');
                 if (!rawPhone) return;
 
-                const phone = rawPhone.replace(/[^\d+]/g, "");
+                let phone = rawPhone.replace(/[^\d]/g, ""); // тільки цифри
+
+                // Якщо не починається на 38 → додаємо
+                if (!phone.startsWith("38")) {
+                    phone = "38" + phone;
+                }
+
+                // завжди додаємо +
+                phone = "+" + phone;
 
                 disconnectObserver();
 
@@ -367,7 +604,7 @@
                 newPhoneLink.addEventListener('click', e => {
                     e.preventDefault();
                     e.stopPropagation();
-                    window.location.href = `callto:+${phone}`;
+                    window.location.href = `callto:${phone}`;
                 });
 
                 view.dataset.calltoProcessed = "true";
@@ -382,11 +619,11 @@
     // ==========================
 
     window.addEventListener('load', function () {
-        if (document.querySelector('#preView')) {
+        if (document.querySelector(observedContainerSelector)) {
             observePreview();
         } else {
             const waitForPreview = setInterval(function () {
-                if (document.querySelector('#preView')) {
+                if (document.querySelector(observedContainerSelector)) {
                     clearInterval(waitForPreview);
                     observePreview();
                 }
