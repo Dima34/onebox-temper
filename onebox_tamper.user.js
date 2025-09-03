@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         BigMag CRM Helper
 // @namespace    https://github.com/Dima34/onebox-temper/
-// @version      1.8
+// @version      1.9
 // @description  Додає корисні функції для CRM BigMag (crm.bigmag.ua)
 // @author       Dima Vavilov
 // @match        https://crm.bigmag.ua/*
@@ -199,23 +199,55 @@
                 // {
                 //     type: "add-toolbar-button",
                 //     name: "Підготувати",
-                //     onClick: function () {
+                //     onClick: function (event, newButtonElement) {
+                //         checkAndSetFieldValueIfEmpty("Город UA:", "Київ");
+                //         checkAndSetFieldValueIfEmpty("Категория:", "Б/У техника");
+                //         checkAndSetFieldValueIfEmpty("Менеджер:", MANAGER_NAME);
+                //         checkAndSetFieldValueIfEmpty("Тип оплаты :", "Обычная оплата");
+
 
                 //     }
                 // },
                 {
                     type: "upgrade-toolbar-button",
                     name: "Первый контакт",
-                    onClick: function (event, newClickHandler) {
+                    onClick: function (event, starterClickHandler) {
                         checkAndSetFieldValueIfEmpty("Город UA:", "Київ");
                         checkAndSetFieldValueIfEmpty("Категория:", "Б/У техника");
                         checkAndSetFieldValueIfEmpty("Менеджер:", MANAGER_NAME);
                         checkAndSetFieldValueIfEmpty("Тип оплаты :", "Обычная оплата");
 
                         // виклик дефолтного (старого) коду кнопки
-                        if (newClickHandler) newClickHandler();
+                        if (starterClickHandler) starterClickHandler();
                     }
-                }
+                },
+                {
+                    type: "upgrade-toolbar-button",
+                    name: "Отказ",
+                    onClick: function (event, starterClickHandler) {
+                        checkAndSetFieldValueIfEmpty("Город UA:", "Київ");
+                        checkAndSetFieldValueIfEmpty("Категория:", "Б/У техника");
+                        checkAndSetFieldValueIfEmpty("Менеджер:", MANAGER_NAME);
+                        checkAndSetFieldValueIfEmpty("Тип оплаты :", "Обычная оплата");
+                        checkAndSetFieldValueIfEmpty("Причина отказа:", "Уже не актуально");
+
+                        // виклик дефолтного (старого) коду кнопки
+                        if (starterClickHandler) starterClickHandler();
+                    }
+                },
+                {
+                    type: "upgrade-toolbar-button",
+                    name: "Зв'язатися при наявності",
+                    onClick: function (event, starterClickHandler) {
+                        checkAndSetFieldValueIfEmpty("Город UA:", "Київ");
+                        checkAndSetFieldValueIfEmpty("Категория:", "Б/У техника");
+                        checkAndSetFieldValueIfEmpty("Менеджер:", MANAGER_NAME);
+                        checkAndSetFieldValueIfEmpty("Тип оплаты :", "Обычная оплата");
+
+                        // виклик дефолтного (старого) коду кнопки
+                        if (starterClickHandler) starterClickHandler();
+                    }
+                },
             ]
         },
         // Шаблон
@@ -590,6 +622,11 @@
                     phone = "38" + phone;
                 }
 
+                // Якщо після 38 немає 0 → додаємо
+                if (phone.startsWith("38") && phone.length > 2 && phone[2] !== "0") {
+                    phone = "380" + phone.slice(2);
+                }
+
                 // завжди додаємо +
                 phone = "+" + phone;
 
@@ -613,6 +650,7 @@
             }
         });
     }
+
 
     // ==========================
     // Запуск
